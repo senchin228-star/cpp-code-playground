@@ -1,27 +1,29 @@
 #include <iostream>
+#include <string>
 
-class IntVector{
+template <typename T>
+class Vector{
     private:
-        int* data;
+        T* data;
         size_t size;
         size_t capacity;
     public:
-        IntVector(size_t initial_capacity = 4) : data(new int[initial_capacity]),
+        Vector(size_t initial_capacity = 4) : data(new T[initial_capacity]),
                                                 size(0), capacity(initial_capacity){}
-        ~IntVector()
+        ~Vector()
         {
             delete[] data;
         }
 
-        IntVector(const IntVector& other) : data(new int[other.get_capacity()]),
-                                            size(other.get_size()), capacity(other.get_capacity())
+        Vector(const Vector& other) : data(new T[other.capacity]),
+                                            size(other.get_size()), capacity(other.capacity)
         {
             for (size_t i = 0; i < other.get_size(); ++i){
                 data[i] = other[i];
             }
         }
         
-        IntVector& operator=(const IntVector& other)
+        Vector& operator=(const Vector& other)
         {
             if (this == &other){
                 return *this;
@@ -30,19 +32,18 @@ class IntVector{
 
             size = other.size;
             capacity = other.capacity;
-            data = new int[capacity];
+            data = new T[capacity];
             for (size_t i = 0; i < size; ++i) {
                 data[i] = other.data[i];
             }
             return *this;
         }
         
-        size_t get_capacity() const {return capacity;}
-        void push_back(int value)
+        void push_back(const T& value)
         {
             if (size == capacity){
                 size_t new_capacity = capacity * 2;
-                int* new_data = new int[new_capacity];
+                T* new_data = new T[new_capacity];
                 for(size_t i = 0; i < size; ++i){
                     new_data[i] = data[i];
                 }
@@ -54,12 +55,12 @@ class IntVector{
             size++;
         }
 
-        int& operator[](size_t index)
+        T& operator[](size_t index)
         {
             return data[index];
         }
 
-        const int& operator[](size_t index) const 
+        const T& operator[](size_t index) const 
         {
             return data[index];
         }
@@ -75,12 +76,21 @@ class IntVector{
         }
 };
 
-int main(){
-    IntVector a(4);
-    a.push_back(100);
-    IntVector b(4);
-    b.push_back(200);
-    b = a;
-    std::cout << "b[0]: " << b[0] << std::endl;
+int main() {
+    // Вектор чисел
+    Vector<int> numbers;
+    numbers.push_back(10);
+    numbers.push_back(20);
+    // Вектор строк!
+    Vector<std::string> strings;
+    strings.push_back("Hello");
+    strings.push_back("dexter morgan");
+    for (size_t i = 0; i < strings.get_size(); ++i) {
+        std::cout << strings[i] << " ";
+    }
+    for (size_t i = 0; i < numbers.get_size(); ++i) {
+        std::cout << numbers[i] << " ";
+    }
+    std::cout << std::endl;
     return 0;
 }
