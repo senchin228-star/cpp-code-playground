@@ -8,3 +8,4 @@ int_vector
 vector
 test
 test.cpp
+smart_ptr
